@@ -29,14 +29,15 @@ Mini-Project : Java - PL/SQL - Merise
 <br />
 
 
-	ReactNative
-<a href="https://nativescript.org/">
+
+<!--a href="https://nativescript.org/">
   <img alt="Native" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/nativescript/nativescript.png" width="40">
 </a>
+	ReactNative
 
 <a href="https://dart.dev/">
   <img alt="Dart" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/dart/dart.png" width="40">
 </a>
 <a href="https://flutter.dev/">
   <img alt="Flutter" src="https://qtoof.academy/wp-content/uploads/2021/04/Google-flutter-logo-768x219.png" width="40">
-</a>
+</a-->
