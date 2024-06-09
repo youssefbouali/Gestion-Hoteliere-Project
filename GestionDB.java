@@ -7,6 +7,10 @@ public class GestionDB {
     private static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:orcl";
     private static final String USER = "manager1";
     private static final String PASS = "123456";
+	
+	
+    private JTextField txtType;
+    private JPanel panelEmployes;
 
     private JFrame frame;
     private JTextField txtDeptName;
@@ -38,6 +42,8 @@ public class GestionDB {
         frame.setBounds(100, 100, 600, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
+		
+		showIndexPanel();
 
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
@@ -54,12 +60,29 @@ public class GestionDB {
         mnEntities.add(mntmPosts);
 
         JMenuItem mntmEmployes = new JMenuItem("Employes");
-	mntmEmployes.addActionListener(e -> { showEmployesPanel(); viewEmployes(e); });
+		mntmEmployes.addActionListener(e -> { showEmployesPanel(); viewEmployes(e); });
         mnEntities.add(mntmEmployes);
 
         JMenuItem mntmMachines = new JMenuItem("Machines");
         mntmMachines.addActionListener(e -> { showMachinesPanel(); viewMachines(e); });
         mnEntities.add(mntmMachines);
+    }
+
+    private void showIndexPanel() {
+        frame.getContentPane().removeAll();
+
+        JPanel panel = new JPanel(new BorderLayout());
+        frame.getContentPane().add(panel, BorderLayout.CENTER);
+
+        txtAreaDepts = new JTextArea();
+        txtAreaDepts.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(txtAreaDepts);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        
+		txtAreaDepts.setText("Bienvenu dans Systeme de Gestion Hoteliere");
+
+        frame.revalidate();
+        frame.repaint();
     }
 
     private void showDepartmentPanel() {
@@ -74,7 +97,7 @@ public class GestionDB {
         JLabel lblDeptName = new JLabel("Department Name:");
         txtDeptName = new JTextField(20);
 
-        btnAdd = new JButton("Add Department");
+        btnAdd = new JButton("Ajouter Department");
         btnAdd.addActionListener(this::addDepartment);
 
         inputPanel.add(lblDeptName);
@@ -86,7 +109,7 @@ public class GestionDB {
         JScrollPane scrollPane = new JScrollPane(txtAreaDepts);
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        btnView = new JButton("View Departments");
+        btnView = new JButton("Afficher Departments");
         btnView.addActionListener(this::viewDepartments);
         panel.add(btnView, BorderLayout.SOUTH);
 
@@ -106,7 +129,7 @@ public class GestionDB {
         JLabel lblPostName = new JLabel("Post Name:");
         txtDeptName = new JTextField(20);
 
-        btnAdd = new JButton("Add Post");
+        btnAdd = new JButton("Ajouter Post");
         btnAdd.addActionListener(this::addPost);
 
         inputPanel.add(lblPostName);
@@ -118,7 +141,7 @@ public class GestionDB {
         JScrollPane scrollPane = new JScrollPane(txtAreaDepts);
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        btnView = new JButton("View Posts");
+        btnView = new JButton("Afficher Posts");
         btnView.addActionListener(this::viewPosts);
         panel.add(btnView, BorderLayout.SOUTH);
 
@@ -128,7 +151,6 @@ public class GestionDB {
 
     private void showEmployesPanel() {
         frame.getContentPane().removeAll();
-
         JPanel panel = new JPanel(new BorderLayout());
         frame.getContentPane().add(panel, BorderLayout.CENTER);
 
@@ -139,22 +161,26 @@ public class GestionDB {
         txtPrenom = new JTextField(15);
         JLabel lblNom = new JLabel("Nom:");
         txtNom = new JTextField(15);
+        JLabel lblType = new JLabel("Type:");
+        txtType = new JTextField(15);
 
-        btnAdd = new JButton("Add Employe");
+        btnAdd = new JButton("Ajouter Employe");
         btnAdd.addActionListener(this::addEmploye);
 
         inputPanel.add(lblPrenom);
         inputPanel.add(txtPrenom);
         inputPanel.add(lblNom);
         inputPanel.add(txtNom);
+        inputPanel.add(lblType);
+        inputPanel.add(txtType);
         inputPanel.add(btnAdd);
 
-        txtAreaDepts = new JTextArea();
-        txtAreaDepts.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(txtAreaDepts);
+        panelEmployes = new JPanel();
+        panelEmployes.setLayout(new BoxLayout(panelEmployes, BoxLayout.Y_AXIS));
+        JScrollPane scrollPane = new JScrollPane(panelEmployes);
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        btnView = new JButton("View Employes");
+        btnView = new JButton("Afficher Employes");
         btnView.addActionListener(this::viewEmployes);
         panel.add(btnView, BorderLayout.SOUTH);
 
@@ -174,7 +200,7 @@ public class GestionDB {
         JLabel lblMachineName = new JLabel("Machine Name:");
         txtDeptName = new JTextField(20);
 
-        btnAdd = new JButton("Add Machine");
+        btnAdd = new JButton("Ajouter Machine");
         btnAdd.addActionListener(this::addMachine);
 
         inputPanel.add(lblMachineName);
@@ -186,7 +212,7 @@ public class GestionDB {
         JScrollPane scrollPane = new JScrollPane(txtAreaDepts);
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        btnView = new JButton("View Machines");
+        btnView = new JButton("Afficher Machines");
         btnView.addActionListener(this::viewMachines);
         panel.add(btnView, BorderLayout.SOUTH);
 
@@ -208,6 +234,7 @@ public class GestionDB {
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(frame, "Department added successfully!");
+				viewDepartments(e);
                 txtDeptName.setText("");
             }
         } catch (SQLException ex) {
@@ -230,6 +257,7 @@ public class GestionDB {
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(frame, "Post added successfully!");
+				viewPosts(e);
                 txtDeptName.setText("");
             }
         } catch (SQLException ex) {
@@ -238,24 +266,30 @@ public class GestionDB {
         }
     }
 
+    
+
     private void addEmploye(ActionEvent e) {
         String prenom = txtPrenom.getText();
         String nom = txtNom.getText();
-        if (prenom.isEmpty() || nom.isEmpty()) {
+        String type = txtType.getText();
+        if (prenom.isEmpty() || nom.isEmpty() || type.isEmpty()) {
             JOptionPane.showMessageDialog(frame, "Prenom and Nom cannot be empty.");
             return;
         }
 
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employe (Id, Prenom, Nom) VALUES (employe_seq.NEXTVAL, ?, ?)")) {
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employe (Id, Prenom, Nom, Type, Date_embauche) VALUES (emp_seq.NEXTVAL, ?, ?, ?, SYSDATE)")) {
 
             stmt.setString(1, prenom);
             stmt.setString(2, nom);
+            stmt.setString(3, type);
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(frame, "Employe added successfully!");
+                viewEmployes(e);
                 txtPrenom.setText("");
                 txtNom.setText("");
+                txtType.setText("");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -277,6 +311,7 @@ public class GestionDB {
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(frame, "Machine added successfully!");
+				viewMachines(e);
                 txtDeptName.setText("");
             }
         } catch (SQLException ex) {
@@ -318,15 +353,38 @@ public class GestionDB {
     }
 
     private void viewEmployes(ActionEvent e) {
+        panelEmployes.removeAll();
+
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM Employe")) {
 
-            StringBuilder sb = new StringBuilder();
             while (rs.next()) {
-                sb.append("ID: ").append(rs.getInt("Id")).append(", Prenom: ").append(rs.getString("Prenom")).append(", Nom: ").append(rs.getString("Nom")).append("\n");
+                int id = rs.getInt("Id");
+                String prenom = rs.getString("Prenom");
+                String nom = rs.getString("Nom");
+                String type = rs.getString("Type");
+
+                JPanel employePanel = new JPanel(new FlowLayout());
+                JTextField txtPrenomField = new JTextField(prenom, 15);
+                JTextField txtNomField = new JTextField(nom, 15);
+                JTextField txtTypeField = new JTextField(type, 15);
+                JButton btnDelete = new JButton("Delete");
+
+                btnDelete.addActionListener(evt -> deleteEmploye(id));
+
+                employePanel.add(new JLabel("Prenom:"));
+                employePanel.add(txtPrenomField);
+                employePanel.add(new JLabel("Nom:"));
+                employePanel.add(txtNomField);
+                employePanel.add(new JLabel("Type:"));
+                employePanel.add(txtTypeField);
+                employePanel.add(btnDelete);
+
+                panelEmployes.add(employePanel);
             }
-            txtAreaDepts.setText(sb.toString());
+            frame.revalidate();
+            frame.repaint();
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(frame, "Error retrieving employes: " + ex.getMessage());
@@ -346,6 +404,22 @@ public class GestionDB {
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(frame, "Error retrieving machines: " + ex.getMessage());
+        }
+    }
+
+    private void deleteEmploye(int id) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Employe WHERE Id = ?")) {
+
+            stmt.setInt(1, id);
+            int rowsDeleted = stmt.executeUpdate();
+            if (rowsDeleted > 0) {
+                JOptionPane.showMessageDialog(frame, "Employe deleted successfully!");
+                viewEmployes(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "Error deleting employe: " + ex.getMessage());
         }
     }
 }
