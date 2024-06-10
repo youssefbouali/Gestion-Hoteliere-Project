@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: GestionDB
+Class-Path: ojdbc8.jar
