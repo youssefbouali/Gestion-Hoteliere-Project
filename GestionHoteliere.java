@@ -73,7 +73,7 @@ public class GestionHoteliere {
 	
     private JComboBox<String> comboBoxPersonneType;
 	
-    private final String[] types = { "Guest", "Staff", "VIP" }; // Example types, modify as needed
+    private final String[] types = { "Invité", "Personnel", "VIP" }; // Example types, modify as needed
 	
 	
     private JButton btnAdd;
@@ -224,7 +224,7 @@ public class GestionHoteliere {
     private void addDepartement(ActionEvent e) {
         String nom = txtDeptNom.getText();
         if (nom.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "nom cannot be empty.");
+            JOptionPane.showMessageDialog(frame, "nom ne peux pas être vide.");
             return;
         }
 
@@ -234,13 +234,13 @@ public class GestionHoteliere {
             stmt.setString(1, nom);
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
-                JOptionPane.showMessageDialog(frame, "Departement added successfully!");
+                JOptionPane.showMessageDialog(frame, "Departement ajouté avec succès!");
                 viewDepartements(e);
                 txtDeptNom.setText("");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error adding departement: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur lors de l'ajout departement: " + ex.getMessage());
         }
     }
 
@@ -263,7 +263,8 @@ public class GestionHoteliere {
                 btnDelete.addActionListener(evt -> deleteDepartement(id));
                 btnSave.addActionListener(evt -> saveDepartement(id, txtDeptNom.getText()));
 
-                departementPanel.add(new JLabel("Nom:"));
+                departementPanel.add(new JLabel("Id : "+id+", "));
+				departementPanel.add(new JLabel("Nom:"));
                 departementPanel.add(txtDeptNom);
                 departementPanel.add(btnSave);
                 departementPanel.add(btnDelete);
@@ -287,13 +288,13 @@ public class GestionHoteliere {
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(frame, "Departement updated successfully!");
+                JOptionPane.showMessageDialog(frame, "Departement Mis à jour avec succés!");
             } else {
-                JOptionPane.showMessageDialog(frame, "No changes made.");
+                JOptionPane.showMessageDialog(frame, "Aucune modification apportée.");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error updating departement: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de mise à jour departement: " + ex.getMessage());
         }
     }
 
@@ -304,12 +305,12 @@ public class GestionHoteliere {
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(frame, "Departement deleted successfully!");
+                JOptionPane.showMessageDialog(frame, "Departement Supprimé avec succès!");
                 viewDepartements(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error deleting departement: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de suppression departement: " + ex.getMessage());
         }
     }
 
@@ -326,124 +327,125 @@ public class GestionHoteliere {
 
 
     private void showPostsPanel() {
-    frame.getContentPane().removeAll();
-    JPanel panel = new JPanel(new BorderLayout());
-    frame.getContentPane().add(panel, BorderLayout.CENTER);
+		frame.getContentPane().removeAll();
+		JPanel panel = new JPanel(new BorderLayout());
+		frame.getContentPane().add(panel, BorderLayout.CENTER);
 
-    JPanel inputPanel = new JPanel();
-    panel.add(inputPanel, BorderLayout.NORTH);
+		JPanel inputPanel = new JPanel();
+		panel.add(inputPanel, BorderLayout.NORTH);
 
-    JLabel lblPostNom = new JLabel("Nom:");
-    txtPostNom = new JTextField(15);
+		JLabel lblPostNom = new JLabel("Nom:");
+		txtPostNom = new JTextField(15);
 
-    JLabel lblPostDepartementID = new JLabel("DepartementID:");
-    txtPostDepartementID  = new JTextField(5);
+		JLabel lblPostDepartementID = new JLabel("DepartementID:");
+		txtPostDepartementID  = new JTextField(5);
 
-    btnAdd = new JButton("Ajouter Post");
-    btnAdd.addActionListener(this::addPost);
+		btnAdd = new JButton("Ajouter Post");
+		btnAdd.addActionListener(this::addPost);
 
-    inputPanel.add(lblPostNom);
-    inputPanel.add(txtPostNom);
-    inputPanel.add(lblPostDepartementID);
-    inputPanel.add(txtPostDepartementID);
-    inputPanel.add(btnAdd);
+		inputPanel.add(lblPostNom);
+		inputPanel.add(txtPostNom);
+		inputPanel.add(lblPostDepartementID);
+		inputPanel.add(txtPostDepartementID);
+		inputPanel.add(btnAdd);
 
-    panelPosts = new JPanel();
-    panelPosts.setLayout(new BoxLayout(panelPosts, BoxLayout.Y_AXIS));
-    JScrollPane scrollPane = new JScrollPane(panelPosts);
-    panel.add(scrollPane, BorderLayout.CENTER);
+		panelPosts = new JPanel();
+		panelPosts.setLayout(new BoxLayout(panelPosts, BoxLayout.Y_AXIS));
+		JScrollPane scrollPane = new JScrollPane(panelPosts);
+		panel.add(scrollPane, BorderLayout.CENTER);
 
-    btnView = new JButton("Actualiser Posts");
-    btnView.addActionListener(this::viewPosts);
-    panel.add(btnView, BorderLayout.SOUTH);
+		btnView = new JButton("Actualiser Posts");
+		btnView.addActionListener(this::viewPosts);
+		panel.add(btnView, BorderLayout.SOUTH);
 
-    frame.revalidate();
-    frame.repaint();
-}
+		frame.revalidate();
+		frame.repaint();
+	}
 
-private void addPost(ActionEvent e) {
-    String nom = txtPostNom.getText();
-    String departmentID = txtPostDepartementID.getText();
-    if (nom.isEmpty() || departmentID.isEmpty()) {
-        JOptionPane.showMessageDialog(frame, "Nom and DepartementID cannot be empty.");
-        return;
-    }
+	private void addPost(ActionEvent e) {
+		String nom = txtPostNom.getText();
+		String departmentID = txtPostDepartementID.getText();
+		if (nom.isEmpty() || departmentID.isEmpty()) {
+			JOptionPane.showMessageDialog(frame, "Nom et DepartementID ne peux pas être vide.");
+			return;
+		}
 
-    try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-         PreparedStatement stmt = conn.prepareStatement("INSERT INTO manager1.Post (Id, Nom, DepartementID) VALUES (employe_seq.NEXTVAL, ?, ?)")) {
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			 PreparedStatement stmt = conn.prepareStatement("INSERT INTO manager1.Post (Id, Nom, DepartementID) VALUES (employe_seq.NEXTVAL, ?, ?)")) {
 
-        stmt.setString(1, nom);
-        stmt.setString(2, departmentID);
-        int rowsInserted = stmt.executeUpdate();
-        if (rowsInserted > 0) {
-            JOptionPane.showMessageDialog(frame, "Post added successfully!");
-            viewPosts(e);
-            txtPostNom.setText("");
-            txtPostDepartementID.setText("");
-        }
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(frame, "Error adding post: " + ex.getMessage());
-    }
-}
+			stmt.setString(1, nom);
+			stmt.setString(2, departmentID);
+			int rowsInserted = stmt.executeUpdate();
+			if (rowsInserted > 0) {
+				JOptionPane.showMessageDialog(frame, "Post ajouté avec succès!");
+				viewPosts(e);
+				txtPostNom.setText("");
+				txtPostDepartementID.setText("");
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(frame, "Erreur lors de l'ajout post: " + ex.getMessage());
+		}
+	}
 
-private void viewPosts(ActionEvent e) {
-    panelPosts.removeAll();
+	private void viewPosts(ActionEvent e) {
+		panelPosts.removeAll();
 
-    try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-         Statement stmt = conn.createStatement();
-         ResultSet rs = stmt.executeQuery("SELECT * FROM manager1.Post")) {
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			 Statement stmt = conn.createStatement();
+			 ResultSet rs = stmt.executeQuery("SELECT * FROM manager1.Post")) {
 
-        while (rs.next()) {
-            int id = rs.getInt("Id");
-            String nom = rs.getString("Nom");
-            String departmentID = rs.getString("DepartementID");
+			while (rs.next()) {
+				int id = rs.getInt("Id");
+				String nom = rs.getString("Nom");
+				String departmentID = rs.getString("DepartementID");
 
-            JPanel postPanel = new JPanel(new FlowLayout());
-            JTextField txtPostNom = new JTextField(nom, 15);
-            JTextField txtPostDepartementID  = new JTextField(departmentID, 5);
-            JButton btnSave = new JButton("Modifier");
-            JButton btnDelete = new JButton("Supprimer");
+				JPanel postPanel = new JPanel(new FlowLayout());
+				JTextField txtPostNom = new JTextField(nom, 15);
+				JTextField txtPostDepartementID  = new JTextField(departmentID, 5);
+				JButton btnSave = new JButton("Modifier");
+				JButton btnDelete = new JButton("Supprimer");
 
-            btnDelete.addActionListener(evt -> deletePost(id));
-            btnSave.addActionListener(evt -> savePost(id, txtPostNom.getText(), txtPostDepartementID.getText()));
+				btnDelete.addActionListener(evt -> deletePost(id));
+				btnSave.addActionListener(evt -> savePost(id, txtPostNom.getText(), txtPostDepartementID.getText()));
 
-            postPanel.add(new JLabel("Nom:"));
-            postPanel.add(txtPostNom);
-            postPanel.add(new JLabel("DepartementID:"));
-            postPanel.add(txtPostDepartementID);
-            postPanel.add(btnSave);
-            postPanel.add(btnDelete);
+				postPanel.add(new JLabel("Id : "+id+", "));
+				postPanel.add(new JLabel("Nom:"));
+				postPanel.add(txtPostNom);
+				postPanel.add(new JLabel("DepartementID:"));
+				postPanel.add(txtPostDepartementID);
+				postPanel.add(btnSave);
+				postPanel.add(btnDelete);
 
-            panelPosts.add(postPanel);
-        }
-        frame.revalidate();
-        frame.repaint();
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(frame, "Error retrieving posts: " + ex.getMessage());
-    }
-}
+				panelPosts.add(postPanel);
+			}
+			frame.revalidate();
+			frame.repaint();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(frame, "Error retrieving posts: " + ex.getMessage());
+		}
+	}
 
-private void savePost(int id, String nom, String departmentID) {
-    try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-         PreparedStatement stmt = conn.prepareStatement("UPDATE manager1.Post SET Nom = ?, DepartementID = ? WHERE Id = ?")) {
+	private void savePost(int id, String nom, String departmentID) {
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			 PreparedStatement stmt = conn.prepareStatement("UPDATE manager1.Post SET Nom = ?, DepartementID = ? WHERE Id = ?")) {
 
-        stmt.setString(1, nom);
-        stmt.setString(2, departmentID);
-        stmt.setInt(3, id);
+			stmt.setString(1, nom);
+			stmt.setString(2, departmentID);
+			stmt.setInt(3, id);
 
-        int rowsUpdated = stmt.executeUpdate();
-        if (rowsUpdated > 0) {
-            JOptionPane.showMessageDialog(frame, "Post updated successfully!");
-        } else {
-            JOptionPane.showMessageDialog(frame, "No changes made.");
-        }
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(frame, "Error updating post: " + ex.getMessage());
-    }
-}
+			int rowsUpdated = stmt.executeUpdate();
+			if (rowsUpdated > 0) {
+				JOptionPane.showMessageDialog(frame, "Post Mis à jour avec succés!");
+			} else {
+				JOptionPane.showMessageDialog(frame, "Aucune modification apportée.");
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(frame, "Erreur de mise à jour post: " + ex.getMessage());
+		}
+	}
 
 
     private void deletePost(int id) {
@@ -453,12 +455,12 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(frame, "Post deleted successfully!");
+                JOptionPane.showMessageDialog(frame, "Post Supprimé avec succès!");
                 viewPosts(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error deleting post: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de suppression post: " + ex.getMessage());
         }
     }
 	
@@ -534,7 +536,7 @@ private void savePost(int id, String nom, String departmentID) {
 		String postID = txtEmployePostID.getText();
 		String salaireID = txtEmployeSalaireID.getText();
 		if (prenom.isEmpty() || nom.isEmpty() || type.isEmpty() || ville.isEmpty() || postID.isEmpty() || salaireID.isEmpty()) {
-			JOptionPane.showMessageDialog(frame, "Prenom, Nom, Type, Ville, PostID and SalaireID cannot be empty.");
+			JOptionPane.showMessageDialog(frame, "Prenom, Nom, Type, Ville, PostID et SalaireID ne peux pas être vide.");
 			return;
 		}
 
@@ -549,7 +551,7 @@ private void savePost(int id, String nom, String departmentID) {
 			stmt.setString(6, salaireID);
 			int rowsInserted = stmt.executeUpdate();
 			if (rowsInserted > 0) {
-				JOptionPane.showMessageDialog(frame, "Employe added successfully!");
+				JOptionPane.showMessageDialog(frame, "Employe ajouté avec succès!");
 				viewEmployes(e);
 				txtEmployePrenom.setText("");
 				txtEmployeNom.setText("");
@@ -560,7 +562,7 @@ private void savePost(int id, String nom, String departmentID) {
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error adding employe: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur lors de l'ajout employe: " + ex.getMessage());
 		}
 	}
 
@@ -594,6 +596,7 @@ private void savePost(int id, String nom, String departmentID) {
 				btnDelete.addActionListener(evt -> deleteEmploye(id));
 				btnSave.addActionListener(evt -> saveEmploye(id, txtEmployePrenomField.getText(), txtEmployeNomField.getText(), (String) comboBoxTypeField.getSelectedItem(), txtVilleField.getText(), txtEmployePostIDField.getText(), txtEmployeSalaireIDField.getText()));
 
+				employePanel.add(new JLabel("Id : "+id+", "));
 				employePanel.add(new JLabel("Prenom:"));
 				employePanel.add(txtEmployePrenomField);
 				employePanel.add(new JLabel("Nom:"));
@@ -633,13 +636,13 @@ private void savePost(int id, String nom, String departmentID) {
 
 			int rowsUpdated = stmt.executeUpdate();
 			if (rowsUpdated > 0) {
-				JOptionPane.showMessageDialog(frame, "Employe updated successfully!");
+				JOptionPane.showMessageDialog(frame, "Employe Mis à jour avec succés!");
 			} else {
-				JOptionPane.showMessageDialog(frame, "No changes made.");
+				JOptionPane.showMessageDialog(frame, "Aucune modification apportée.");
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error updating employe: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur de mise à jour employe: " + ex.getMessage());
 		}
 	}
 
@@ -651,12 +654,12 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(frame, "Employe deleted successfully!");
+                JOptionPane.showMessageDialog(frame, "Employe Supprimé avec succès!");
                 viewEmployes(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error deleting employe: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de suppression employe: " + ex.getMessage());
         }
     }
 	
@@ -710,7 +713,7 @@ private void savePost(int id, String nom, String departmentID) {
 
 	private void addMachine(String nom, String departmentID) {
 		if (nom.isEmpty() || departmentID.isEmpty()) {
-			JOptionPane.showMessageDialog(frame, "Nom and DepartementID cannot be empty.");
+			JOptionPane.showMessageDialog(frame, "Nom et DepartementID ne peux pas être vide.");
 			return;
 		}
 
@@ -721,12 +724,12 @@ private void savePost(int id, String nom, String departmentID) {
 			stmt.setString(2, departmentID);
 			int rowsInserted = stmt.executeUpdate();
 			if (rowsInserted > 0) {
-				JOptionPane.showMessageDialog(frame, "Machine added successfully!");
+				JOptionPane.showMessageDialog(frame, "Machine ajouté avec succès!");
 				viewMachines(null);
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error adding machine: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur lors de l'ajout machine: " + ex.getMessage());
 		}
 	}
 
@@ -752,6 +755,7 @@ private void savePost(int id, String nom, String departmentID) {
 				btnDelete.addActionListener(evt -> deleteMachine(id));
 				btnSave.addActionListener(evt -> saveMachine(id, txtMachineNom.getText(), txtMachineDepartementID.getText()));
 
+				machinePanel.add(new JLabel("Id : "+id+", "));
 				machinePanel.add(new JLabel("Nom:"));
 				machinePanel.add(txtMachineNom);
 				machinePanel.add(new JLabel("DepartementID:"));
@@ -780,13 +784,13 @@ private void savePost(int id, String nom, String departmentID) {
 
 			int rowsUpdated = stmt.executeUpdate();
 			if (rowsUpdated > 0) {
-				JOptionPane.showMessageDialog(frame, "Machine updated successfully!");
+				JOptionPane.showMessageDialog(frame, "Machine Mis à jour avec succés!");
 			} else {
-				JOptionPane.showMessageDialog(frame, "No changes made.");
+				JOptionPane.showMessageDialog(frame, "Aucune modification apportée.");
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error updating machine: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur de mise à jour machine: " + ex.getMessage());
 		}
 	}
 
@@ -798,12 +802,12 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(frame, "Machine deleted successfully!");
+                JOptionPane.showMessageDialog(frame, "Machine Supprimé avec succès!");
                 viewMachines(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error deleting machine: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de suppression machine: " + ex.getMessage());
         }
     }
 	
@@ -859,7 +863,7 @@ private void savePost(int id, String nom, String departmentID) {
         String nombre_pieces = txtHotelNombre_pieces.getText();
         String categorie = txtHotelCategorie.getText();
         if (addresse.isEmpty() || nombre_pieces.isEmpty() || categorie.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "addresse, nombre_pieces and Categorie cannot be empty.");
+            JOptionPane.showMessageDialog(frame, "addresse, nombre_pieces et Categorie ne peux pas être vide.");
             return;
         }
 
@@ -871,13 +875,13 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setString(3, categorie);
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
-                JOptionPane.showMessageDialog(frame, "Hotel added successfully!");
+                JOptionPane.showMessageDialog(frame, "Hotel ajouté avec succès!");
                 viewHotels(e);
                 txtHotelAddresse.setText("");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error adding Hotel: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur lors de l'ajout Hotel: " + ex.getMessage());
         }
     }
 
@@ -904,7 +908,8 @@ private void savePost(int id, String nom, String departmentID) {
                 btnDelete.addActionListener(evt -> deleteHotel(id));
                 btnSave.addActionListener(evt -> saveHotel(id, txtHotelAddresse.getText(), txtHotelNombre_pieces.getText(), txtHotelCategorie.getText()));
 
-                HotelPanel.add(new JLabel("Addresse:"));
+                HotelPanel.add(new JLabel("Id : "+id+", "));
+				HotelPanel.add(new JLabel("Addresse:"));
                 HotelPanel.add(txtHotelAddresse);
                 HotelPanel.add(new JLabel("Nombre_pieces:"));
                 HotelPanel.add(txtHotelNombre_pieces);
@@ -934,13 +939,13 @@ private void savePost(int id, String nom, String departmentID) {
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(frame, "Hotel updated successfully!");
+                JOptionPane.showMessageDialog(frame, "Hotel Mis à jour avec succés!");
             } else {
-                JOptionPane.showMessageDialog(frame, "No changes made.");
+                JOptionPane.showMessageDialog(frame, "Aucune modification apportée.");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error updating Hotel: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de mise à jour Hotel: " + ex.getMessage());
         }
     }
 
@@ -951,12 +956,12 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(frame, "Hotel deleted successfully!");
+                JOptionPane.showMessageDialog(frame, "Hotel Supprimé avec succès!");
                 viewHotels(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error deleting Hotel: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de suppression Hotel: " + ex.getMessage());
         }
     }
 	
@@ -1007,7 +1012,7 @@ private void savePost(int id, String nom, String departmentID) {
 		String prenom = txtDirecteurPrenom.getText();
 		String nom = txtDirecteurNom.getText();
 		if (prenom.isEmpty() || nom.isEmpty()) {
-			JOptionPane.showMessageDialog(frame, "Prenom and Nom cannot be empty.");
+			JOptionPane.showMessageDialog(frame, "Prenom et Nom ne peux pas être vide.");
 			return;
 		}
 
@@ -1018,14 +1023,14 @@ private void savePost(int id, String nom, String departmentID) {
 			stmt.setString(2, nom);
 			int rowsInserted = stmt.executeUpdate();
 			if (rowsInserted > 0) {
-				JOptionPane.showMessageDialog(frame, "Directeur added successfully!");
+				JOptionPane.showMessageDialog(frame, "Directeur ajouté avec succès!");
 				viewDirecteurs(e);
 				txtDirecteurPrenom.setText("");
 				txtDirecteurNom.setText("");
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error adding Directeur: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur lors de l'ajout Directeur: " + ex.getMessage());
 		}
 	}
 
@@ -1051,6 +1056,7 @@ private void savePost(int id, String nom, String departmentID) {
 				btnDelete.addActionListener(evt -> deleteDirecteur(id));
 				btnSave.addActionListener(evt -> saveDirecteur(id, txtDirecteurPrenom.getText(), txtDirecteurNom.getText()));
 
+				DirecteurPanel.add(new JLabel("Id : "+id+", "));
 				DirecteurPanel.add(new JLabel("Prenom:"));
 				DirecteurPanel.add(txtDirecteurPrenom);
 				DirecteurPanel.add(new JLabel("Nom:"));
@@ -1079,13 +1085,13 @@ private void savePost(int id, String nom, String departmentID) {
 
 			int rowsUpdated = stmt.executeUpdate();
 			if (rowsUpdated > 0) {
-				JOptionPane.showMessageDialog(frame, "Directeur updated successfully!");
+				JOptionPane.showMessageDialog(frame, "Directeur Mis à jour avec succés!");
 			} else {
-				JOptionPane.showMessageDialog(frame, "No changes made.");
+				JOptionPane.showMessageDialog(frame, "Aucune modification apportée.");
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error updating Directeur: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur de mise à jour Directeur: " + ex.getMessage());
 		}
 	}
 
@@ -1097,12 +1103,12 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(frame, "Directeur deleted successfully!");
+                JOptionPane.showMessageDialog(frame, "Directeur Supprimé avec succès!");
                 viewDirecteurs(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error deleting Directeur: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de suppression Directeur: " + ex.getMessage());
         }
     }
 	
@@ -1152,7 +1158,7 @@ private void savePost(int id, String nom, String departmentID) {
 
 	private void addGestion(String hotelId, String directeurId) {
 		if (hotelId.isEmpty() || directeurId.isEmpty()) {
-			JOptionPane.showMessageDialog(frame, "hotelId and directeurId cannot be empty.");
+			JOptionPane.showMessageDialog(frame, "hotelId et directeurId ne peux pas être vide.");
 			return;
 		}
 
@@ -1163,14 +1169,14 @@ private void savePost(int id, String nom, String departmentID) {
 			stmt.setString(2, directeurId);
 			int rowsInserted = stmt.executeUpdate();
 			if (rowsInserted > 0) {
-				JOptionPane.showMessageDialog(frame, "Gestion added successfully!");
+				JOptionPane.showMessageDialog(frame, "Gestion ajouté avec succès!");
 				viewGestions(null);
 				txtGestionHotelID.setText("");
 				txtGestionDirecteurID.setText("");
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error adding Gestion: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur lors de l'ajout Gestion: " + ex.getMessage());
 		}
 	}
 
@@ -1196,6 +1202,7 @@ private void savePost(int id, String nom, String departmentID) {
 				btnDelete.addActionListener(evt -> deleteGestion(id));
 				btnSave.addActionListener(evt -> saveGestion(id, txtGestionHotelID.getText(), txtGestionDirecteurID.getText()));
 
+				GestionPanel.add(new JLabel("Id : "+id+", "));
 				GestionPanel.add(new JLabel("HotelID:"));
 				GestionPanel.add(txtGestionHotelID);
 				GestionPanel.add(new JLabel("DirecteurID:"));
@@ -1224,13 +1231,13 @@ private void savePost(int id, String nom, String departmentID) {
 
 			int rowsUpdated = stmt.executeUpdate();
 			if (rowsUpdated > 0) {
-				JOptionPane.showMessageDialog(frame, "Gestion updated successfully!");
+				JOptionPane.showMessageDialog(frame, "Gestion Mis à jour avec succés!");
 			} else {
-				JOptionPane.showMessageDialog(frame, "No changes made.");
+				JOptionPane.showMessageDialog(frame, "Aucune modification apportée.");
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error updating Gestion: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur de mise à jour Gestion: " + ex.getMessage());
 		}
 	}
 
@@ -1242,12 +1249,12 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(frame, "Gestion deleted successfully!");
+                JOptionPane.showMessageDialog(frame, "Gestion Supprimé avec succès!");
                 viewGestions(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error deleting Gestion: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de suppression Gestion: " + ex.getMessage());
         }
     }
 	
@@ -1299,7 +1306,7 @@ private void savePost(int id, String nom, String departmentID) {
         String nom = txtServiceNom.getText();
         String directeurID = txtServiceDirecteurID.getText();
         if (nom.isEmpty() || directeurID.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "Nom and DirecteurID cannot be empty.");
+            JOptionPane.showMessageDialog(frame, "Nom et DirecteurID ne peux pas être vide.");
             return;
         }
 
@@ -1310,14 +1317,14 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setString(2, directeurID);
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
-                JOptionPane.showMessageDialog(frame, "Service added successfully!");
+                JOptionPane.showMessageDialog(frame, "Service ajouté avec succès!");
                 viewServices(e);
                 txtServiceNom.setText("");
                 txtServiceDirecteurID.setText("");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error adding Service: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur lors de l'ajout Service: " + ex.getMessage());
         }
     }
 
@@ -1342,7 +1349,8 @@ private void savePost(int id, String nom, String departmentID) {
                 btnDelete.addActionListener(evt -> deleteService(id));
                 btnSave.addActionListener(evt -> saveService(id, txtServiceNom.getText(), txtServiceDirecteurID.getText()));
 
-                servicePanel.add(new JLabel("Nom:"));
+                servicePanel.add(new JLabel("Id : "+id+", "));
+				servicePanel.add(new JLabel("Nom:"));
                 servicePanel.add(txtServiceNom);
                 servicePanel.add(new JLabel("DirecteurID:"));
                 servicePanel.add(txtServiceDirecteurID);
@@ -1369,13 +1377,13 @@ private void savePost(int id, String nom, String departmentID) {
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(frame, "Service updated successfully!");
+                JOptionPane.showMessageDialog(frame, "Service Mis à jour avec succés!");
             } else {
-                JOptionPane.showMessageDialog(frame, "No changes made.");
+                JOptionPane.showMessageDialog(frame, "Aucune modification apportée.");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error updating Service: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de mise à jour Service: " + ex.getMessage());
         }
     }
 
@@ -1386,12 +1394,12 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(frame, "Service deleted successfully!");
+                JOptionPane.showMessageDialog(frame, "Service Supprimé avec succès!");
                 viewServices(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error deleting Service: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de suppression Service: " + ex.getMessage());
         }
     }
 	
@@ -1513,6 +1521,7 @@ private void savePost(int id, String nom, String departmentID) {
 				btnDelete.addActionListener(evt -> deleteChambre(id));
 				btnSave.addActionListener(evt -> saveChambre(id, txtChambreNumero.getText(), txtNombreLits.getText(), txtChambrePrix.getText(), txtHotelID.getText()));
 
+				chambrePanel.add(new JLabel("Id : "+id+", "));
 				chambrePanel.add(new JLabel("Numero:"));
 				chambrePanel.add(txtChambreNumero);
 				chambrePanel.add(new JLabel("Nombre de lits:"));
@@ -1566,12 +1575,12 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(frame, "Chambre deleted successfully!");
+                JOptionPane.showMessageDialog(frame, "Chambre Supprimé avec succès!");
                 viewChambres(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error deleting Chambre: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de suppression Chambre: " + ex.getMessage());
         }
     }
 	
@@ -1628,7 +1637,7 @@ private void savePost(int id, String nom, String departmentID) {
 		String date_min = txtOccupationDate_min.getText();
 		String date_max = txtOccupationDate_max.getText();
 		if (date_min.isEmpty() || date_max.isEmpty()) {
-			JOptionPane.showMessageDialog(frame, "date_min and date_max cannot be empty.");
+			JOptionPane.showMessageDialog(frame, "date_min et date_max ne peux pas être vide.");
 			return;
 		}
 
@@ -1652,14 +1661,14 @@ private void savePost(int id, String nom, String departmentID) {
 			stmt.setDate(2, sqlDate_max);
 			int rowsInserted = stmt.executeUpdate();
 			if (rowsInserted > 0) {
-				JOptionPane.showMessageDialog(frame, "Occupation added successfully!");
+				JOptionPane.showMessageDialog(frame, "Occupation ajouté avec succès!");
 				viewOccupations(e);
 				txtOccupationDate_min.setText("");
 				txtOccupationDate_max.setText("");
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error adding Occupation: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur lors de l'ajout Occupation: " + ex.getMessage());
 		}
 	}
 
@@ -1686,6 +1695,7 @@ private void savePost(int id, String nom, String departmentID) {
 				btnDelete.addActionListener(evt -> deleteOccupation(id));
 				btnSave.addActionListener(evt -> saveOccupation(id, txtOccupationDate_min.getText(), txtOccupationDate_max.getText()));
 	
+				OccupationPanel.add(new JLabel("Id : "+id+", "));
 				OccupationPanel.add(new JLabel("Date_min:"));
 				OccupationPanel.add(txtOccupationDate_min);
 				OccupationPanel.add(new JLabel("Date_max:"));
@@ -1727,13 +1737,13 @@ private void savePost(int id, String nom, String departmentID) {
 
 			int rowsUpdated = stmt.executeUpdate();
 			if (rowsUpdated > 0) {
-				JOptionPane.showMessageDialog(frame, "Occupation updated successfully!");
+				JOptionPane.showMessageDialog(frame, "Occupation Mis à jour avec succés!");
 			} else {
-				JOptionPane.showMessageDialog(frame, "No changes made.");
+				JOptionPane.showMessageDialog(frame, "Aucune modification apportée.");
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error updating Occupation: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur de mise à jour Occupation: " + ex.getMessage());
 		}
 	}
 
@@ -1746,12 +1756,12 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(frame, "Occupation deleted successfully!");
+                JOptionPane.showMessageDialog(frame, "Occupation Supprimé avec succès!");
                 viewOccupations(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error deleting Occupation: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de suppression Occupation: " + ex.getMessage());
         }
     }
 	
@@ -1779,7 +1789,7 @@ private void savePost(int id, String nom, String departmentID) {
 		txtPersonneNom = new JTextField(15);
 		
 		JLabel lblPersonneType = new JLabel("Type:");
-		String[] types = { "Guest", "Staff", "VIP" }; // Example types, modify as needed
+		String[] types = { "Invité", "Personnel", "VIP" }; // Example types, modify as needed
 		comboBoxPersonneType = new JComboBox<>(types);
 
 		btnAdd = new JButton("Ajouter Personne");
@@ -1812,7 +1822,7 @@ private void savePost(int id, String nom, String departmentID) {
 		String type = (String) comboBoxPersonneType.getSelectedItem();
 		
 		if (prenom.isEmpty() || nom.isEmpty() || type.isEmpty()) {
-			JOptionPane.showMessageDialog(frame, "Prenom, Nom and Type cannot be empty.");
+			JOptionPane.showMessageDialog(frame, "Prenom, Nom et Type ne peux pas être vide.");
 			return;
 		}
 
@@ -1824,7 +1834,7 @@ private void savePost(int id, String nom, String departmentID) {
 			stmt.setString(3, type);
 			int rowsInserted = stmt.executeUpdate();
 			if (rowsInserted > 0) {
-				JOptionPane.showMessageDialog(frame, "Personne added successfully!");
+				JOptionPane.showMessageDialog(frame, "Personne ajouté avec succès!");
 				viewPersonnes(e);
 				txtPersonnePrenom.setText("");
 				txtPersonneNom.setText("");
@@ -1832,7 +1842,7 @@ private void savePost(int id, String nom, String departmentID) {
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error adding Personne: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur lors de l'ajout Personne: " + ex.getMessage());
 		}
 	}
 
@@ -1861,6 +1871,7 @@ private void savePost(int id, String nom, String departmentID) {
 				btnDelete.addActionListener(evt -> deletePersonne(id));
 				btnSave.addActionListener(evt -> savePersonne(id, txtPersonnePrenom.getText(), txtPersonneNom.getText(), (String) comboBoxPersonneType.getSelectedItem()));
 
+				PersonnePanel.add(new JLabel("Id : "+id+", "));
 				PersonnePanel.add(new JLabel("Prenom:"));
 				PersonnePanel.add(txtPersonnePrenom);
 				PersonnePanel.add(new JLabel("Nom:"));
@@ -1891,13 +1902,13 @@ private void savePost(int id, String nom, String departmentID) {
 
 			int rowsUpdated = stmt.executeUpdate();
 			if (rowsUpdated > 0) {
-				JOptionPane.showMessageDialog(frame, "Personne updated successfully!");
+				JOptionPane.showMessageDialog(frame, "Personne Mis à jour avec succés!");
 			} else {
-				JOptionPane.showMessageDialog(frame, "No changes made.");
+				JOptionPane.showMessageDialog(frame, "Aucune modification apportée.");
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(frame, "Error updating Personne: " + ex.getMessage());
+			JOptionPane.showMessageDialog(frame, "Erreur de mise à jour Personne: " + ex.getMessage());
 		}
 	}
 
@@ -1909,12 +1920,12 @@ private void savePost(int id, String nom, String departmentID) {
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(frame, "Personne deleted successfully!");
+                JOptionPane.showMessageDialog(frame, "Personne Supprimé avec succès!");
                 viewPersonnes(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error deleting Personne: " + ex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Erreur de suppression Personne: " + ex.getMessage());
         }
     }
 	
