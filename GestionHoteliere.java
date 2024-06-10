@@ -64,6 +64,8 @@ public class GestionHoteliere {
     private JPanel panelOccupations;
     private JTextField txtOccupationDate_min;
     private JTextField txtOccupationDate_max;
+    private JTextField txtOccupationChambreID;
+    private JTextField txtOccupationPersonneID;
 	
     private JPanel panelPersonnes;
     private JTextField txtPersonnePrenom;
@@ -1609,6 +1611,10 @@ public class GestionHoteliere {
 		txtOccupationDate_min = new JTextField(15);
 		JLabel lblOccupationDate_max = new JLabel("Date_max:");
 		txtOccupationDate_max = new JTextField(15);
+		JLabel lblChambreID = new JLabel("ChambreID:");
+		txtOccupationChambreID = new JTextField(5);
+		JLabel lblPersonneID = new JLabel("PersonneID:");
+		txtOccupationPersonneID = new JTextField(5);
 
 		btnAdd = new JButton("Ajouter Occupation");
 		btnAdd.addActionListener(this::addOccupation);
@@ -1617,6 +1623,10 @@ public class GestionHoteliere {
 		inputPanel.add(txtOccupationDate_min);
 		inputPanel.add(lblOccupationDate_max);
 		inputPanel.add(txtOccupationDate_max);
+		inputPanel.add(lblChambreID);
+		inputPanel.add(txtOccupationChambreID);
+		inputPanel.add(lblPersonneID);
+		inputPanel.add(txtOccupationPersonneID);
 		inputPanel.add(btnAdd);
 
 		panelOccupations = new JPanel();
@@ -1632,16 +1642,17 @@ public class GestionHoteliere {
 		frame.repaint();
 	}
 
-
 	private void addOccupation(ActionEvent e) {
 		String date_min = txtOccupationDate_min.getText();
 		String date_max = txtOccupationDate_max.getText();
-		if (date_min.isEmpty() || date_max.isEmpty()) {
-			JOptionPane.showMessageDialog(frame, "date_min et date_max ne peux pas être vide.");
+		String chambreID = txtOccupationChambreID.getText();
+		String personneID = txtOccupationPersonneID.getText();
+		if (date_min.isEmpty() || date_max.isEmpty() || chambreID.isEmpty() || personneID.isEmpty()) {
+			JOptionPane.showMessageDialog(frame, "Tous les champs doivent être remplis.");
 			return;
 		}
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Adjust format as needed
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		java.sql.Date sqlDate_min;
 		java.sql.Date sqlDate_max;
 		try {
@@ -1650,21 +1661,25 @@ public class GestionHoteliere {
 			sqlDate_min = new java.sql.Date(parsedDate_min.getTime());
 			sqlDate_max = new java.sql.Date(parsedDate_max.getTime());
 		} catch (ParseException ex) {
-			JOptionPane.showMessageDialog(frame, "Invalid date format. Please use yyyy-MM-dd.");
+			JOptionPane.showMessageDialog(frame, "Format de date invalide. Utilisez yyyy-MM-dd.");
 			return;
 		}
 
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			 PreparedStatement stmt = conn.prepareStatement("INSERT INTO manager3.Occupation (Id, Date_min, Date_max, Date_eng) VALUES (employe_seq.NEXTVAL, ?, ?, SYSDATE)")) {
+			 PreparedStatement stmt = conn.prepareStatement("INSERT INTO manager3.Occupation (Id, Date_min, Date_max, Date_eng, ChambreID, PersonneID) VALUES (employe_seq.NEXTVAL, ?, ?, SYSDATE, ?, ?)")) {
 
 			stmt.setDate(1, sqlDate_min);
 			stmt.setDate(2, sqlDate_max);
+			stmt.setString(3, chambreID);
+			stmt.setString(4, personneID);
 			int rowsInserted = stmt.executeUpdate();
 			if (rowsInserted > 0) {
-				JOptionPane.showMessageDialog(frame, "Occupation ajouté avec succès!");
+				JOptionPane.showMessageDialog(frame, "Occupation ajoutée avec succès!");
 				viewOccupations(e);
 				txtOccupationDate_min.setText("");
 				txtOccupationDate_max.setText("");
+				txtOccupationChambreID.setText("");
+				txtOccupationPersonneID.setText("");
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -1672,37 +1687,43 @@ public class GestionHoteliere {
 		}
 	}
 
-
-
 	private void viewOccupations(ActionEvent e) {
 		panelOccupations.removeAll();
-	
+
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM manager3.Occupation")) {
-	
+			 Statement stmt = conn.createStatement();
+			 ResultSet rs = stmt.executeQuery("SELECT * FROM manager3.Occupation")) {
+
 			while (rs.next()) {
 				int id = rs.getInt("Id");
 				String date_min = rs.getString("Date_min");
 				String date_max = rs.getString("Date_max");
-	
+				String chambreID = rs.getString("ChambreID");
+				String personneID = rs.getString("PersonneID");
+
 				JPanel OccupationPanel = new JPanel(new FlowLayout());
 				JTextField txtOccupationDate_min = new JTextField(date_min, 15);
 				JTextField txtOccupationDate_max = new JTextField(date_max, 15);
+				JTextField txtOccupationChambreID = new JTextField(chambreID, 5);
+				JTextField txtOccupationPersonneID = new JTextField(personneID, 5);
 				JButton btnSave = new JButton("Modifier");
 				JButton btnDelete = new JButton("Supprimer");
-	
+
 				btnDelete.addActionListener(evt -> deleteOccupation(id));
-				btnSave.addActionListener(evt -> saveOccupation(id, txtOccupationDate_min.getText(), txtOccupationDate_max.getText()));
-	
-				OccupationPanel.add(new JLabel("Id : "+id+", "));
+				btnSave.addActionListener(evt -> saveOccupation(id, txtOccupationDate_min.getText(), txtOccupationDate_max.getText(), txtOccupationChambreID.getText(), txtOccupationPersonneID.getText()));
+
+				OccupationPanel.add(new JLabel("Id : " + id + ", "));
 				OccupationPanel.add(new JLabel("Date_min:"));
 				OccupationPanel.add(txtOccupationDate_min);
 				OccupationPanel.add(new JLabel("Date_max:"));
 				OccupationPanel.add(txtOccupationDate_max);
+				OccupationPanel.add(new JLabel("ChambreID:"));
+				OccupationPanel.add(txtOccupationChambreID);
+				OccupationPanel.add(new JLabel("PersonneID:"));
+				OccupationPanel.add(txtOccupationPersonneID);
 				OccupationPanel.add(btnSave);
 				OccupationPanel.add(btnDelete);
-	
+
 				panelOccupations.add(OccupationPanel);
 			}
 			frame.revalidate();
@@ -1713,9 +1734,8 @@ public class GestionHoteliere {
 		}
 	}
 
-
-		private void saveOccupation(int id, String date_min, String date_max) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Adjust format as needed
+	private void saveOccupation(int id, String date_min, String date_max, String chambreID, String personneID) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		java.sql.Date sqlDate_min;
 		java.sql.Date sqlDate_max;
 		try {
@@ -1729,15 +1749,17 @@ public class GestionHoteliere {
 		}
 
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			 PreparedStatement stmt = conn.prepareStatement("UPDATE manager3.Occupation SET Date_min = ?, Date_max = ? WHERE Id = ?")) {
+			 PreparedStatement stmt = conn.prepareStatement("UPDATE manager3.Occupation SET Date_min = ?, Date_max = ?, ChambreID = ?, PersonneID = ? WHERE Id = ?")) {
 
 			stmt.setDate(1, sqlDate_min);
 			stmt.setDate(2, sqlDate_max);
-			stmt.setInt(3, id);
+			stmt.setString(3, chambreID);
+			stmt.setString(4, personneID);
+			stmt.setInt(5, id);
 
 			int rowsUpdated = stmt.executeUpdate();
 			if (rowsUpdated > 0) {
-				JOptionPane.showMessageDialog(frame, "Occupation Mis à jour avec succés!");
+				JOptionPane.showMessageDialog(frame, "Occupation mise à jour avec succès!");
 			} else {
 				JOptionPane.showMessageDialog(frame, "Aucune modification apportée.");
 			}
@@ -1746,6 +1768,8 @@ public class GestionHoteliere {
 			JOptionPane.showMessageDialog(frame, "Erreur de mise à jour Occupation: " + ex.getMessage());
 		}
 	}
+
+
 
 
 
