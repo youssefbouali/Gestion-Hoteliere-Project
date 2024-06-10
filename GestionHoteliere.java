@@ -102,6 +102,8 @@ public class GestionHoteliere {
         frame.setBounds(100, 100, 1100, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
+		ImageIcon favicon = new ImageIcon(getClass().getResource("./hotel.png"));
+		frame.setIconImage(favicon.getImage());
 		
 		showIndexPanel();
 
