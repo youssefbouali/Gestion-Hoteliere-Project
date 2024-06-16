@@ -16,6 +16,7 @@ undo_tablespace=undotbs1
 
 
 
+
 orapwd file=%ORACLE_HOME%\database\PWDorcl.ora password=123456 entries=10
 
 
