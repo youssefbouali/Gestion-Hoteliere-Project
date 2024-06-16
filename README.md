@@ -44,3 +44,14 @@ Mini-Project : Java - Oracle PL/SQL - Merise - UML
 <a href="https://flutter.dev/">
   <img alt="Flutter" src="https://qtoof.academy/wp-content/uploads/2021/04/Google-flutter-logo-768x219.png" width="40">
 </a-->
+
+![Looping1](https://github.com/youssefbouali/Mini-Project/assets/53417796/aea50a93-4565-4837-9602-b20089ba6e4f)
+![Looping2](https://github.com/youssefbouali/Mini-Project/assets/53417796/9a978714-0fd4-435c-9f5c-08911c3aab88)
+![Looping3](https://github.com/youssefbouali/Mini-Project/assets/53417796/d2c03080-52c0-4fb7-b9b9-19f6b6dafa7e)
+
+![9](https://github.com/youssefbouali/Mini-Project/assets/53417796/31d6e266-a19e-4488-9b9a-78a1dcdee794)
+![Image5](https://github.com/youssefbouali/Mini-Project/assets/53417796/1133ebb6-c9b8-4034-87e0-5489bdd48d16)
+![Image1](https://github.com/youssefbouali/Mini-Project/assets/53417796/823cc275-2926-4a3e-93f2-b903d55fc058)
+![Image2](https://github.com/youssefbouali/Mini-Project/assets/53417796/fd2ba87e-16d7-4465-8fae-3b2ca4c76f37)
+![Image3](https://github.com/youssefbouali/Mini-Project/assets/53417796/3ec6d244-16df-474c-9b4f-27e7720a0802)
+![Image4](https://github.com/youssefbouali/Mini-Project/assets/53417796/9ac4156d-77ff-4dfd-93fc-42ad0668d582)
