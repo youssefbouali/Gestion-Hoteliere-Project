@@ -1,5 +1,5 @@
 # Hotel Management - Mini-Project
-Mini-Project : Java - PL/SQL - Merise
+Mini-Project : Java - Oracle PL/SQL - Merise - UML
 <!-- Oracle DB, Software Desktop, Mobile -->
 
 
@@ -10,8 +10,8 @@ Mini-Project : Java - PL/SQL - Merise
 
 
 
-<a href="https://openjfx.io/">
-  <img alt="Java FX" src="https://upload.wikimedia.org/wikipedia/en/c/cc/JavaFX_Logo.png" width="55"/>
+<a href="https://docs.oracle.com/javase/tutorial/uiswing/">
+  <img alt="Java Swing" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN2TliCdrRAHF5m_Pxis81Phg76ALI4Ef3vw&s" width="65"/>
 </a>
 
 <a href="https://www.oracle.com/database/">
@@ -22,6 +22,9 @@ Mini-Project : Java - PL/SQL - Merise
 </a>
 <a href="https://fr.wikipedia.org/wiki/Merise_(informatique)">
   <img alt="Merise" src="http://www.jfreesoft.com/JMerise/images/JMeriseLogoPetit.png" width="40">
+</a>
+<a href="https://en.wikipedia.org/wiki/Unified_Modeling_Language">
+  <img alt="UML" src="https://upload.wikimedia.org/wikipedia/commons/d/d5/UML_logo.svg" width="40">
 </a>
 
 
